@@ -1,0 +1,45 @@
+import arcade
+from random import randint
+WIDTH = 800
+HEIGHT = 600
+radius = 50
+window = arcade.Window(WIDTH, HEIGHT, "My Arcade Game")
+arcade.set_background_color(arcade.color.AMAZON)
+
+# Initialize your variables here
+circle_x = WIDTH/3
+circle_y = HEIGHT/3
+circle_r = radius
+circleclicks = 0
+color = (randint(0, 255), randint(0, 255), randint(0, 255))
+rectangle_x = 440
+rectangle_y = 570
+rectangle_height = 50
+rectangle_width = 180
+@window.event("on_draw")
+def game_loop():
+    # import global variables here.
+    global circle_x, circle_y, circle_r, circleclicks, color
+
+    # update your variables here.
+
+    # Draw things here.
+    arcade.start_render()
+    arcade.draw_circle_filled(circle_x, circle_y, circle_r, color)
+    arcade.draw_text(f"Amount of Circle Clicks: {circleclicks}", 100, 500, arcade.color.BLACK, 24)
+    if circle_r == 0:
+            arcade.draw_rectangle_filled(rectangle_x, rectangle_y, rectangle_width, rectangle_height, arcade.color.RADICAL_RED)
+            arcade.draw_text("Reset", 400, 550, arcade.color.BLACK, 24)
+            
+@window.event
+def on_mouse_press(mouse_x, mouse_y, button, modifiers):
+    global circle_r, circle_x, circle_y, circleclicks, color, rectangle_height, rectangle_width, rectangle_x, rectangle_y
+    print('click!')
+    print('x = {}, y = {}'.format(mouse_x, mouse_y))
+    if (mouse_x-circle_x)**2 + (mouse_y-circle_y)**2 <= (circle_r)**2:  
+        circle_r = circle_r - 5
+        circleclicks = circleclicks + 1
+        color = (randint(0, 255), randint(0, 255), randint(0, 255))
+    if mouse_x >= rectangle_x - rectangle_width/2 and mouse_x <= rectangle_x + rectangle_width/2 and mouse_y >= rectangle_y - rectangle_height/2 and mouse_y <= rectangle_y + rectangle_height/2:
+        circle_r = 50
+arcade.run()
